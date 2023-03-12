@@ -20,7 +20,8 @@ We'll need at least the following entities to implement the service:
 | ID | STRING/UUID |
 | FIRST/LAST NAME | STRING |
 | Password | STRING |
-| Email(optinal) | STRING |
+| Email | STRING |
+| username | STRING |
 
 **posts**
 
