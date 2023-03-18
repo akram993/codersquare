@@ -1,22 +1,24 @@
 import { db } from "../datastore";
 import { ExpressHandler, Post } from "../types";
 import crypto from 'crypto';
+import { CreatePostRequest, CreatePostResponse, ListPostRequest, ListPostResponse } from "../api";
 
 
 
-export const listPostHandler: ExpressHandler<{}, {}> = (req, res) => {
-    res.send({ posts: db.listPosts() });
+// list all the posts handler
+export const listPostHandler: ExpressHandler<ListPostRequest, ListPostResponse> = async (req, res) => {
+    res.send({ posts: await db.listPosts() });
 }
 
-type CreatePostRequest = Pick<Post, 'title'|'userId'|'url'>
-
-interface CreatePostResponse{}
-
-export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = (req, res)=>{
-    if(!req.body.title || !req.body.url || !req.body.userId){
+// create post handler
+export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = async (req, res)=>{
+    // TODO: validate user exists
+    // TODO: validate title and url are non-empty
+    // TODO: get user ID from session
+    // TODO: validate url in new otherwise add +1 to existing post 
+    if(!req.body.title || !req.body.url || !req.body.userId){ // check if the attributes we need exist
         return res.sendStatus(400);
     }
-
     const post:Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
@@ -24,7 +26,7 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
         url: req.body.url,
         userId : req.body.userId
     }
-    db.createPost(post);
+    await db.createPost(post);
     res.sendStatus(200);
 }
 
