@@ -13,5 +13,5 @@ CREATE TABLE posts(
     url       VARCHAR UNIQUE NOT NULL,
     userId    VARCHAR NOT NULL,
     postedAt  INTEGER NOT NULL,
-    FOREIGN   KEY (userId) REFERENCES users(id) 
+    FOREIGN KEY (userId) REFERENCES users(id) 
 );
