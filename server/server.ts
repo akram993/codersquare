@@ -5,6 +5,7 @@ import { initDb } from './datastore';
 import { signInHandler, signUpHandler } from './handlers/AuthHandler';
 import { requestLoggerMiddleware } from './middleware/LoggerMiddleware';
 import { errHandler } from './middleware/ErrorMiddleware';
+import { authMiddleware } from './middleware/AuthMiddleware';
 import dotenv from 'dotenv';
 
 (async () => {
@@ -17,12 +18,16 @@ const app = express();
 app.use(express.json());
 app.use(requestLoggerMiddleware);
 
+//public endpoints
+app.post('/signup', asyncHandler(signUpHandler));
+app.post('/signin', asyncHandler(signInHandler));
 
+app.use(authMiddleware)
+
+//protected endpoints
 app.get('/posts', asyncHandler(listPostHandler));
 app.post('/posts', asyncHandler(createPostHandler));
 
-app.post('/signup', asyncHandler(signUpHandler));
-app.post('/signin', asyncHandler(signInHandler));
 
 app.use(errHandler);
 

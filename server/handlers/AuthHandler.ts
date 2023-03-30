@@ -8,12 +8,12 @@ import { signJwt } from "../auth";
 export const signUpHandler: ExpressHandler<SignUpRequest, SignUpResponse>  =async (req, res) =>{
     const {email, firstName, lastName, userName, password} = req.body;
     if(!email || !firstName || !lastName || !userName || !password){
-        return res.status(400).send("all fields are required!");
+        return res.status(400).send({error: "all fields are required"});
     }
 
     const existing = await db.getUserByEmail(email) || await db.getUserByUserName(userName);
     if(existing){
-        return res.status(403).send("user already exist");
+        return res.status(403).send({error: "user already exist!"});
     }
     
 
@@ -26,18 +26,21 @@ export const signUpHandler: ExpressHandler<SignUpRequest, SignUpResponse>  =asyn
         password
     }
     await db.createUser(user);
-    return res.sendStatus(200);
+    const jwt = signJwt({userId: user.id});
+    return res.status(200).send({
+        jwt,
+    });
 }
 
 export const signInHandler: ExpressHandler<SingInRequest, SignInResponse> = async (req, res) =>{
     const {login, password} = req.body;
     if(!login || !password){
-        return res.sendStatus(400);
+        return res.status(400);
     }
 
     const existing = await db.getUserByEmail(login) || await db.getUserByUserName(login);
     if(!existing || existing.password !== req.body.password ){
-        return res.sendStatus(403);
+        return res.status(403);
     }
     const jwt = signJwt({userId: existing.id})
 
