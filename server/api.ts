@@ -1,6 +1,6 @@
-import { Post } from "./types";
+import { Post, User } from "./types";
 
-//post APIs
+/****************** post APIs ***********************/
 
 // List the posts APIs
 export interface ListPostRequest {}
@@ -23,8 +23,23 @@ export interface DeletePostRequest {};
 export interface DeletePostResponse {};
 
 
-// Comment APIs
+/****************** user APIs ***********************/
+//Sign Up
+export type SignUpRequest = Pick<User, 'email'|'firstName'|'lastName'|'userName'|'password'>;
+export interface SignUpResponse {
+    jwt: string
+};
 
-// Likes APIs
+//Sign In
+export interface SingInRequest {
+    login: string; //email or username
+    password: string
+}
+export type SignInResponse = {
+    user:Pick<User, 'email'|'firstName'|'lastName'|'userName'|'id'>;
+    jwt:string
+}
 
-// User APIs
+/****************** comments APIs ***********************/
+
+/****************** likes APIs ***********************/

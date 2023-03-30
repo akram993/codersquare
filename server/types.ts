@@ -2,11 +2,11 @@ import { RequestHandler } from "express";
 
 export interface User {
     id: string;
-    firsName: string;
+    firstName: string;
     lastName: string;
     email: string;
     password: string;
-    userName: String;
+    userName: string;
 }
 
 export interface Post {
@@ -32,3 +32,7 @@ export interface Comment {
 
 
 export type ExpressHandler<Req, Res> = RequestHandler<string, Partial<Res>, Partial<Req>, any>;
+
+export interface JwtObject{
+    userId: string
+} 
