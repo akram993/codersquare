@@ -16,7 +16,7 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
     // TODO: validate title and url are non-empty
     // TODO: get user ID from session
     // TODO: validate url in new otherwise add +1 to existing post 
-    if(!req.body.title || !req.body.url || !req.body.userId){ // check if the attributes we need exist
+    if(!req.body.title || !req.body.url){ // check if the attributes we need exist
         return res.sendStatus(400);
     }
     const post:Post = {
@@ -24,7 +24,7 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
         postedAt: Date.now(),
         title: req.body.title,
         url: req.body.url,
-        userId : req.body.userId
+        userId : res.locals.userId
     }
     await db.createPost(post);
     res.sendStatus(200);

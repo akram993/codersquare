@@ -9,7 +9,7 @@ export interface ListPostResponse {
 }
 
 // Create the post APIs
-export type CreatePostRequest = Pick<Post, 'title'|'userId'|'url'>;
+export type CreatePostRequest = Pick<Post, 'title'|'url'>;
 export interface CreatePostResponse{};
 
 // Get the post by ID APIs
